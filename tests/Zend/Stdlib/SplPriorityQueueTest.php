@@ -20,7 +20,6 @@
  * @version    $Id:$
  */
 
-require_once 'Zend/Stdlib/SplPriorityQueue.php';
 
 /**
  * @category   Zend

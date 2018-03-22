@@ -46,7 +46,7 @@ class Zend_Stdlib_PriorityQueue implements Countable, IteratorAggregate, Seriali
      * Inner queue class to use for iteration
      * @var string
      */
-    protected $queueClass = 'Zend_Stdlib_SplPriorityQueue';
+    protected $queueClass = Zend_Stdlib_SplPriorityQueue::class;
 
     /**
      * Actual items aggregated in the priority queue. Each item is an array
@@ -68,7 +68,7 @@ class Zend_Stdlib_PriorityQueue implements Countable, IteratorAggregate, Seriali
      *
      * @param  mixed $data
      * @param  int $priority
-     * @return Zend_Stdlib_PriorityQueue
+     * @return $this
      */
     public function insert($data, $priority = 1)
     {
@@ -231,7 +231,7 @@ class Zend_Stdlib_PriorityQueue implements Countable, IteratorAggregate, Seriali
      * internal queue class. The class provided should extend SplPriorityQueue.
      *
      * @param  string $class
-     * @return Zend_Stdlib_PriorityQueue
+     * @return $this
      */
     public function setInternalQueueClass($class)
     {
@@ -274,7 +274,7 @@ class Zend_Stdlib_PriorityQueue implements Countable, IteratorAggregate, Seriali
     /**
      * Get the inner priority queue instance
      *
-     * @return SplPriorityQueue|null
+     * @return SplPriorityQueue
      */
     protected function getQueue()
     {

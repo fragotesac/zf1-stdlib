@@ -20,9 +20,6 @@
  * @version    $Id:$
  */
 
-require_once 'Zend/Stdlib/CallbackHandler.php';
-require_once 'Zend/Stdlib/TestAsset/SignalHandlers/InstanceMethod.php';
-require_once 'Zend/Stdlib/TestAsset/SignalHandlers/ObjectCallback.php';
 
 /**
  * @todo       Remove all closures from tests and refactor as methods or functions
@@ -102,24 +99,6 @@ class Zend_Stdlib_CallbackHandlerTest extends PHPUnit\Framework\TestCase
     public function errorHandler($errno, $errstr)
     {
         $this->error = true;
-    }
-
-    public function testCallbackConsistingOfStringContextWithNonStaticMethodShouldRaiseException()
-    {
-        if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
-            $this->markTestSkipped('Behavior of is_callable changes between 5.2 and 5.3');
-        }
-        $this->expectException('Zend_Stdlib_Exception_InvalidCallbackException');
-        $handler     = new Zend_Stdlib_CallbackHandler(array('Zend_Stdlib_TestAsset_SignalHandlers_InstanceMethod', 'handler'));
-    }
-
-    public function testStringCallbackConsistingOfNonStaticMethodShouldRaiseException()
-    {
-        if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
-            $this->markTestSkipped('Behavior of is_callable changes between 5.2 and 5.3');
-        }
-        $this->expectException('Zend_Stdlib_Exception_InvalidCallbackException');
-        $handler = new Zend_Stdlib_CallbackHandler('Zend_Stdlib_TestAsset_SignalHandlers_InstanceMethod::handler');
     }
 
     public function testCallbackToClassImplementingOverloadingButNotInvocableShouldRaiseException()
