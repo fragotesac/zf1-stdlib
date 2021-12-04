@@ -38,18 +38,12 @@ class Zend_Stdlib_SplPriorityQueue extends SplPriorityQueue implements Serializa
     protected $serial = PHP_INT_MAX;
 
     /**
-     * @var bool
-     */
-    protected $isPhp53;
-
-    /**
      * Constructor
      *
      * @return void
      */
     public function __construct()
     {
-        $this->isPhp53 = version_compare(PHP_VERSION, '5.3', '>=');
     }
 
     /**
@@ -68,11 +62,10 @@ class Zend_Stdlib_SplPriorityQueue extends SplPriorityQueue implements Serializa
         // hack around it to ensure that items registered at the same priority
         // return in the order registered. In the userland version, this is not
         // necessary.
-        if ($this->isPhp53) {
-            if (!is_array($priority)) {
-                $priority = array($priority, $this->serial--);
-            }
+        if (!is_array($priority)) {
+            $priority = array($priority, $this->serial--);
         }
+
         return parent::insert($datum, $priority);
     }
 
@@ -114,6 +107,11 @@ class Zend_Stdlib_SplPriorityQueue extends SplPriorityQueue implements Serializa
      */
     public function serialize()
     {
+        return serialize($this->__serialize());
+    }
+
+    public function __serialize(): array
+    {
         $data = array();
         $this->setExtractFlags(self::EXTR_BOTH);
         while ($this->valid()) {
@@ -127,7 +125,7 @@ class Zend_Stdlib_SplPriorityQueue extends SplPriorityQueue implements Serializa
             $this->insert($item['data'], $item['priority']);
         }
 
-        return serialize($data);
+        return $data;
     }
 
     /**
@@ -138,7 +136,12 @@ class Zend_Stdlib_SplPriorityQueue extends SplPriorityQueue implements Serializa
      */
     public function unserialize($data)
     {
-        foreach (unserialize($data) as $item) {
+        $this->__unserialize(unserialize($data));
+    }
+
+    public function __unserialize(array $data): void
+    {
+        foreach ($data as $item) {
             $this->insert($item['data'], $item['priority']);
         }
     }
